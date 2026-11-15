@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Рекурсивно рухаємося вгору до вершини
+int climbUp(const vector<int>& arr, int index) {
+    if (index >= (int)arr.size() - 1) {
+        return index;
+    }
+
+    if (arr[index] >= arr[index + 1]) {
+        return index;
+    }
+
+    return climbUp(arr, index + 1);
+}
+
+// Рекурсивно перевіряємо спадання після вершини
+bool climbDown(const vector<int>& arr, int index) {
+    if (index >= (int)arr.size() - 1) {
+        return true;
+    }
+
+    if (arr[index] <= arr[index + 1]) {
+        return false;
+    }
+
+    return climbDown(arr, index + 1);
+}
+
+// Основна функція
+bool validMountainArray(const vector<int>& arr) {
+    int n = arr.size();
+
+    if (n < 3) {
+        return false;
+    }
+
+    int peak = climbUp(arr, 0);
+
+    // Вершина не може бути першим або останнім елементом
+    if (peak == 0 || peak == n - 1) {
+        return false;
+    }
+
+    return climbDown(arr, peak);
+}
+
+int main() {
+    vector<int> arr1 = {2, 1};
+    vector<int> arr2 = {3, 5, 5};
+    vector<int> arr3 = {0, 3, 2, 1};
+    vector<int> arr4 = {0, 1, 2, 3, 4, 2, 1};
+
+    cout << boolalpha;
+
+    cout << "Example 1: " << validMountainArray(arr1) << endl;
+    cout << "Example 2: " << validMountainArray(arr2) << endl;
+    cout << "Example 3: " << validMountainArray(arr3) << endl;
+    cout << "Example 4: " << validMountainArray(arr4) << endl;
+
+    return 0;
+}
